@@ -29,7 +29,7 @@ public class GraphService {
         }
     }
     public void createProjectNode(String projectName){
-        cypher.query("CREATE (p:Project {name:{1}}) RETURN \"hello\", p1.name",map("1",projectName));
+        cypher.query("CREATE (p:Project {name:{1}}) RETURN \"hello\", p.name",map("1",projectName));
 
     }
 
