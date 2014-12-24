@@ -3,7 +3,7 @@ package no.api.youngman.model;
 public class People {
     private String username;
     private String avatarUrl;
-    private String name;
+    private String realname;
     private String email;
 
     public String getUsername() {
@@ -30,5 +30,11 @@ public class People {
         this.email = email;
     }
 
+    public String getRealname() {
+        return realname;
+    }
 
+    public void setRealname(String realname) {
+        this.realname = realname;
+    }
 }

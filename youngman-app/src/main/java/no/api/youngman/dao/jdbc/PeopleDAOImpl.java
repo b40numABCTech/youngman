@@ -9,7 +9,7 @@ import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 
 public class PeopleDAOImpl implements PeopleDAO {
-    private static final String SQL_INSERT = "INSERT INTO collaborator (username, email, avatarurl) " +
+    private static final String SQL_INSERT = "INSERT INTO collaborator (username, email, realname, avatarurl) " +
             "VALUES (?, ?, ?)";
 
     private JdbcTemplate jdbcTemplate;
@@ -26,6 +26,7 @@ public class PeopleDAOImpl implements PeopleDAO {
             int index = 1;
             ps.setString(index++, model.getUsername());
             ps.setString(index++, model.getEmail());
+            ps.setString(index++, model.getRealname());
             ps.setString(index, model.getAvatarUrl());
             return ps;
         });

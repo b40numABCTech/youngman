@@ -3,7 +3,7 @@ package no.api.youngman.client.git;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
-import no.api.youngman.model.Collaborators;
+import no.api.youngman.model.Collaborator;
 import no.api.youngman.model.People;
 import no.api.youngman.model.Project;
 import no.api.youngman.properties.CoreProperties;
@@ -52,7 +52,7 @@ public class GitRestClient {
         return null;
     }
 
-    public List<Collaborators> getAllCollaborators() {
+    public List<Collaborator> getAllCollaborators() {
         return null;
     }
 
