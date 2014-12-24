@@ -1,5 +1,8 @@
 package no.api.youngman.client.git;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import no.api.youngman.model.Collaborators;
 import no.api.youngman.model.People;
 import no.api.youngman.model.Project;
@@ -17,23 +20,31 @@ import java.util.List;
 
 public class GitRestClient {
 
-    @Autowired
+
     private RestTemplate restClient;
 
-    @Autowired
     private CoreProperties properties;
 
-    public List<People> getAllMember() {
+    @Autowired
+    public void setRestClient(RestTemplate restClient) {
+        this.restClient = restClient;
+    }
 
+    @Autowired
+    public void setProperties(CoreProperties properties) {
+        this.properties = properties;
+    }
+
+    public List<People> getAllMember() {
         String endpoint = properties.getGitApiEndpoint() + "/orgs/amedia/members";
         ResponseEntity<String> response = getResponseFromGit(endpoint);
-
-
         return null;
     }
 
     private List<People> transform(ResponseEntity<String> responseEntity) {
         String jsonString = responseEntity.getBody();
+        Gson gson = new GsonBuilder().create();
+        JsonElement element = gson.toJsonTree(jsonString);
         return null;
     }
 

@@ -21,6 +21,8 @@
 
     </bean>
 
+    <bean id="properties" class="no.api.youngman.properties.CoreProperties" />
+
     <bean id="youngmanQuartzScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="quartzProperties">
             <props>
