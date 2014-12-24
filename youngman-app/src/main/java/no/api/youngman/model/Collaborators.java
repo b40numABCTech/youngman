@@ -1,6 +1,6 @@
 package no.api.youngman.model;
 
-public class Contebuilder {
+public class Collaborators {
     String people;
     String projectName;
 
