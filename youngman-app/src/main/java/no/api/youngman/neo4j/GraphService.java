@@ -1,9 +1,13 @@
 package no.api.youngman.neo4j;
 
+import no.api.youngman.model.Collaborators;
+import no.api.youngman.model.People;
+import no.api.youngman.model.Project;
 import org.neo4j.helpers.collection.IteratorUtil;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.neo4j.helpers.collection.MapUtil.map;
@@ -28,16 +32,64 @@ public class GraphService {
             throw new IllegalArgumentException("Invalid Neo4j-ServerURL " + uri);
         }
     }
-    public void createProjectNode(String projectName){
-        cypher.query("CREATE (p:Project {name:{1}}) RETURN \"hello\", p.name",map("1",projectName));
+
+    public void createProjectNode(Project project){
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("1",project.getProjectName());
+        params.put("2",project.getProjectFullName());
+        params.put("3",project.getDesc());
+        params.put("4",project.getLang());
+        Iterable<Map<String,Object>> iterable = getProjectsByName(project.getProjectName());
+        if(!iterable.iterator().hasNext()){
+            cypher.query("CREATE (p:Project {name:{1}, projectfullname:{2}, desc:{3}, lang:{4}}) RETURN \"hello\", p.name",
+                    params);
+        }
 
     }
+
+    public void createPeopleNode(People people){
+        Map<String, Object> params = new HashMap<>();
+        params.put("1",people.getUsername());
+        params.put("2",people.getAvatarUrl());
+        params.put("3",people.getEmail());
+        Iterable<Map<String,Object>> iterable = getPeopleByUsername(people.getUsername());
+        if(!iterable.iterator().hasNext()) {
+            cypher.query("CREATE (p:People {username:{1}, avatarurl:{2}, email:{3}}) RETURN \"hello\", " +
+                    "p.name", params);
+        }
+
+    }
+
+//    public void createRelations(Collaborators collaborators){
+//        Map<String, Object> params = new HashMap<>();
+//        params.put("1",people.getUsername());
+//        params.put("2",people.getAvatarUrl());
+//        params.put("3",people.getEmail());
+//        cypher.query("CREATE (p:People {username:{1}, avatarurl:{2}, email:{3}}) RETURN \"hello\", " +
+//                "p.name", params);
+//
+//    }
 
     public Iterable<Map<String,Object>> getProjects() {
         return IteratorUtil.asCollection(cypher.query(
                 "MATCH (n:Project) RETURN n LIMIT 25"));
     }
 
+    public Iterable<Map<String,Object>> getPeople() {
+        return IteratorUtil.asCollection(cypher.query(
+                "MATCH (n:People) RETURN n LIMIT 25"));
+    }
+
+    public Iterable<Map<String,Object>> getProjectsByName(String name) {
+        return IteratorUtil.asCollection(cypher.query(
+                "MATCH (n:Project) WHERE n.name = '"+name+"' RETURN n"));
+    }
+
+    public Iterable<Map<String,Object>> getPeopleByUsername(String username) {
+        return IteratorUtil.asCollection(cypher.query(
+                "MATCH (n:People) WHERE n.username = '"+username+"' RETURN n"));
+    }
 
 
 }
