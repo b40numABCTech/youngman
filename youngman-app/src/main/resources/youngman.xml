@@ -40,4 +40,8 @@
         <property name="waitForJobsToCompleteOnShutdown" value="true" />
         <property name="startupDelay" value="10" />
     </bean>
+
+    <bean id="peopleDAO" class="no.api.youngman.dao.jdbc.PeopleDAOImpl"/>
+    <bean id="projectDAO" class="no.api.youngman.dao.jdbc.ProjectDAOImpl"/>
+    <bean id="collaboratorDAO" class="no.api.youngman.dao.jdbc.CollaboratorDAOImpl"/>
 </beans>
