@@ -161,6 +161,22 @@ public class GitRestClient {
         return contributors;
     }
 
+    public List<Contributor> getContributorByProject(Project project) {
+        List<Contributor> contributors = new ArrayList<>();
+        if(project.getContributorUrl() != null) {
+            String endpoint = project.getContributorUrl();
+            do {
+                ResponseEntity<String> responseEntity = getResponseFromGit(endpoint);
+                JsonArray members = JsonUtil.transformToArray(responseEntity);
+                List<Contributor> eachContributors =
+                        readContributorJSONArray(members, project.getProjectName());
+                contributors.addAll(eachContributors);
+                endpoint = extractEndpoint(responseEntity.getHeaders());
+            } while (StringUtil.isNotBlank(endpoint));
+        }
+        return contributors;
+    }
+
     private List<Contributor> readContributorJSONArray(JsonArray elementList,String projectName) {
         List<Contributor> contributors = new ArrayList<>();
         for(JsonElement eachElement : elementList) {
