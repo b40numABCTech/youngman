@@ -5,6 +5,8 @@ public class Project {
     private String projectFullName;
     private String desc;
     private String lang;
+    private String projectUrl;
+    private String contributorUrl;
 
     public String getProjectName() {
         return projectName;
@@ -36,5 +38,21 @@ public class Project {
 
     public void setLang(String lang) {
         this.lang = lang;
+    }
+
+    public String getProjectUrl() {
+        return projectUrl;
+    }
+
+    public void setProjectUrl(String projectUrl) {
+        this.projectUrl = projectUrl;
+    }
+
+    public String getContributorUrl() {
+        return contributorUrl;
+    }
+
+    public void setContributorUrl(String contributorUrl) {
+        this.contributorUrl = contributorUrl;
     }
 }

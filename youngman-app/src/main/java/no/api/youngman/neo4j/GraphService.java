@@ -1,12 +1,11 @@
 package no.api.youngman.neo4j;
 
-import no.api.youngman.model.Collaborator;
+import no.api.youngman.model.Contributor;
 import no.api.youngman.model.People;
 import no.api.youngman.model.Project;
 import org.neo4j.helpers.collection.IteratorUtil;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,7 +60,7 @@ public class GraphService {
 
     }
 
-    public void createCollaborateRelations(Collaborator collaborators){
+    public void createCollaborateRelations(Contributor collaborators){
         Iterable<Map<String,Object>> iterable = getRelation(collaborators);
         if(!iterable.iterator().hasNext()) {
             cypher.query("MATCH (pp:People) WHERE pp.username = '" + collaborators.getPeople() +
@@ -92,7 +91,7 @@ public class GraphService {
                 "MATCH (n:People) WHERE n.username = '"+username+"' RETURN n"));
     }
 
-    public Iterable<Map<String,Object>> getRelation(Collaborator collaborators) {
+    public Iterable<Map<String,Object>> getRelation(Contributor collaborators) {
         return IteratorUtil.asCollection(cypher.query(
                 "MATCH (a:Project{name:'"+collaborators.getProjectName()+"'})-[:COLLABORATED_BY]->" +
                         "(b:People{username:'"+collaborators.getPeople()+"'}) RETURN a,b LIMIT 1"));

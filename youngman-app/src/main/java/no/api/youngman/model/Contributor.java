@@ -1,6 +1,6 @@
 package no.api.youngman.model;
 
-public class Collaborator {
+public class Contributor {
     String people;
     String projectName;
 

@@ -1,11 +1,9 @@
 package no.api.youngman.Utils;
 
-import no.api.youngman.model.Collaborator;
+import no.api.youngman.model.Contributor;
 import no.api.youngman.model.People;
 import no.api.youngman.model.Project;
 import no.api.youngman.neo4j.GraphService;
-
-import java.util.Map;
 
 /**
  *
@@ -32,7 +30,7 @@ public class Test {
 
         service.createPeopleNode(people);
 
-        Collaborator collaborator = new Collaborator();
+        Contributor collaborator = new Contributor();
         collaborator.setProjectName("AID");
         collaborator.setPeople("user1");
 

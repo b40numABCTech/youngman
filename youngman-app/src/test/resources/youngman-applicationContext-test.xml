@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+    <bean name="fetchGitJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean" >
+        <property name="jobClass" value="no.api.youngman.quartz.FetchGitJob" />
+        <!--property name="jobDataAsMap">
+            <map>
+                <entry key="purgingContentTask" value-ref="purgingContentTask" />
+            </map>
+        </property-->
+        <property name="durability" value="true" />
+    </bean>
+
+    <bean id="properties" class="no.api.youngman.properties.CoreProperties" />
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+        <property name="requestFactory">
+            <bean class="org.springframework.http.client.HttpComponentsClientHttpRequestFactory" />
+        </property>
+    </bean>
+    <bean id="gitRestClient" class="no.api.youngman.client.git.GitRestClient" />
+</beans>
