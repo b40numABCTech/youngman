@@ -7,3 +7,4 @@ target/
 .springBeans
 .settings/*
 */.settings/*
+youngman.properties
