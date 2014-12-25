@@ -17,6 +17,8 @@
         <codec.version>1.9</codec.version>
         <junit.version>4.12</junit.version>
         <joda.version>2.4</joda.version>
+        <liquibase.version>3.3.0</liquibase.version>
+        <mysql.connector.version>5.1.23</mysql.connector.version>
     </properties>
     <modules>
         <module>youngman-app</module>
@@ -49,6 +51,17 @@
                 <artifactId>quartz-jobs</artifactId>
                 <version>${quartz.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-core</artifactId>
+                <version>${liquibase.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.connector.version}</version>
+            </dependency>
+
             <!-- Spark dependency -->
             <dependency>
                 <groupId>com.sparkjava</groupId>
