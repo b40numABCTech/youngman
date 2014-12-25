@@ -15,7 +15,7 @@ public class CoreProperties implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         properties = new Properties();
-        properties.load(this.getClass().getResourceAsStream("/youngman.properties"));
+        properties.load(this.getClass().getResourceAsStream("/core/youngman.properties"));
 
         for (Map.Entry<?, ?> eachEntry : properties.entrySet()) {
             mapset.put((String) eachEntry.getKey() ,(String) eachEntry.getValue());
