@@ -39,9 +39,14 @@ public class GraphService {
         params.put("2",project.getProjectFullName());
         params.put("3",project.getDescription());
         params.put("4",project.getLang());
+        params.put("5",project.getProjectUrl());
+        params.put("6",project.getContributorUrl());
+        params.put("7",project.getId());
+        params.put("8",project.getLastupdate().toString("dd/MM/yyyy"));
         Iterable<Map<String,Object>> iterable = getProjectsByName(project.getProjectName());
         if(!iterable.iterator().hasNext()){
-            cypher.query("CREATE (p:Project {name:{1}, projectfullname:{2}, desc:{3}, lang:{4}}) RETURN \"hello\", p.name",
+            cypher.query("CREATE (p:Project {projectname:{1}, projectfullname:{2}, description:{3}, lang:{4}, " +
+                            "projecturl:{5}, contributorurl:{6}, id:{7}, lastupdate:{8}}) RETURN p",
                     params);
         }
 
@@ -52,10 +57,13 @@ public class GraphService {
         params.put("1",people.getUsername());
         params.put("2",people.getAvatarUrl());
         params.put("3",people.getEmail());
+        params.put("4",people.getRealname());
+        params.put("5",people.getId());
+        params.put("6",people.getLastupdate().toString("dd/MM/yyyy"));
         Iterable<Map<String,Object>> iterable = getPeopleByUsername(people.getUsername());
         if(!iterable.iterator().hasNext()) {
-            cypher.query("CREATE (p:People {username:{1}, avatarurl:{2}, email:{3}}) RETURN \"hello\", " +
-                    "p.name", params);
+            cypher.query("CREATE (p:People {username:{1}, avatarurl:{2}, email:{3}, realname:{4}, id:{5}, " +
+                    "lastupdate:{6}}) RETURN p", params);
         }
 
     }
@@ -83,7 +91,7 @@ public class GraphService {
 
     public Iterable<Map<String,Object>> getProjectsByName(String name) {
         return IteratorUtil.asCollection(cypher.query(
-                "MATCH (n:Project) WHERE n.name = '"+name+"' RETURN n"));
+                "MATCH (n:Project) WHERE n.projectname = '"+name+"' RETURN n"));
     }
 
     public Iterable<Map<String,Object>> getPeopleByUsername(String username) {
