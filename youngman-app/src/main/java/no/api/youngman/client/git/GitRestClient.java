@@ -132,7 +132,7 @@ public class GitRestClient {
                 Project project = new Project();
                 project.setProjectName(JsonUtil.jsonObjectLoader(jsonObject,"name"));
                 project.setProjectFullName(JsonUtil.jsonObjectLoader(jsonObject, "full_name"));
-                project.setDesc(JsonUtil.jsonObjectLoader(jsonObject, "description"));
+                project.setDescription(JsonUtil.jsonObjectLoader(jsonObject, "description"));
                 project.setLang(JsonUtil.jsonObjectLoader(jsonObject, "language"));
                 project.setProjectUrl(JsonUtil.jsonObjectLoader(jsonObject, "url"));
                 project.setContributorUrl(JsonUtil.jsonObjectLoader(jsonObject, "contributors_url"));

@@ -9,7 +9,8 @@ import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 
 public class ProjectDAOImpl implements ProjectDAO {
-    private static final String SQL_INSERT = "INSERT INTO collaborator (projectname, projectfullname, desc, lang) " +
+    private static final String SQL_INSERT = "INSERT INTO collaborator (projectname,"+
+            " projectfullname, description, lang,  projecturl, contributorurl) " +
             "VALUES (?, ?, ?, ?)";
 
     private JdbcTemplate jdbcTemplate;
@@ -26,8 +27,10 @@ public class ProjectDAOImpl implements ProjectDAO {
             int index = 1;
             ps.setString(index++, model.getProjectName());
             ps.setString(index++, model.getProjectFullName());
-            ps.setString(index++, model.getDesc());
-            ps.setString(index, model.getLang());
+            ps.setString(index++, model.getDescription());
+            ps.setString(index++, model.getLang());
+            ps.setString(index++, model.getProjectUrl());
+            ps.setString(index, model.getContributorUrl());
             return ps;
         });
         return model;

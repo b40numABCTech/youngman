@@ -3,7 +3,7 @@ package no.api.youngman.model;
 public class Project {
     private String projectName;
     private String projectFullName;
-    private String desc;
+    private String description;
     private String lang;
     private String projectUrl;
     private String contributorUrl;
@@ -24,12 +24,12 @@ public class Project {
         this.projectFullName = projectFullName;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getLang() {
