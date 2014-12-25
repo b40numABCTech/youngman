@@ -1,5 +1,7 @@
 package no.api.youngman.Utils;
 
+import no.api.youngman.model.Collaborator;
+import no.api.youngman.model.People;
 import no.api.youngman.model.Project;
 import no.api.youngman.neo4j.GraphService;
 
@@ -22,6 +24,19 @@ public class Test {
         project.setLang("EN");
 
         service.createProjectNode(project);
+
+        People people = new People();
+        people.setUsername("user1");
+        people.setAvatarUrl("sdjklfkjldsfnds");
+        people.setEmail("user1@sldfsd.com");
+
+        service.createPeopleNode(people);
+
+        Collaborator collaborator = new Collaborator();
+        collaborator.setProjectName("AID");
+        collaborator.setPeople("user1");
+
+        service.createCollaborateRelations(collaborator);
     }
 
 }

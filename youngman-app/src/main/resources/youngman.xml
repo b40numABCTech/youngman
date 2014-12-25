@@ -21,6 +21,8 @@
 
     </bean>
 
+    <bean id="properties" class="no.api.youngman.properties.CoreProperties" />
+
     <bean id="youngmanQuartzScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="quartzProperties">
             <props>
@@ -40,4 +42,8 @@
         <property name="waitForJobsToCompleteOnShutdown" value="true" />
         <property name="startupDelay" value="10" />
     </bean>
+
+    <bean id="peopleDAO" class="no.api.youngman.dao.jdbc.PeopleDAOImpl"/>
+    <bean id="projectDAO" class="no.api.youngman.dao.jdbc.ProjectDAOImpl"/>
+    <bean id="collaboratorDAO" class="no.api.youngman.dao.jdbc.CollaboratorDAOImpl"/>
 </beans>

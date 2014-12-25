@@ -1,6 +1,6 @@
 package no.api.youngman.neo4j;
 
-import no.api.youngman.model.Collaborators;
+import no.api.youngman.model.Collaborator;
 import no.api.youngman.model.People;
 import no.api.youngman.model.Project;
 import org.neo4j.helpers.collection.IteratorUtil;
@@ -61,15 +61,16 @@ public class GraphService {
 
     }
 
-//    public void createRelations(Collaborators collaborators){
-//        Map<String, Object> params = new HashMap<>();
-//        params.put("1",people.getUsername());
-//        params.put("2",people.getAvatarUrl());
-//        params.put("3",people.getEmail());
-//        cypher.query("CREATE (p:People {username:{1}, avatarurl:{2}, email:{3}}) RETURN \"hello\", " +
-//                "p.name", params);
-//
-//    }
+    public void createCollaborateRelations(Collaborator collaborators){
+        Iterable<Map<String,Object>> iterable = getRelation(collaborators);
+        if(!iterable.iterator().hasNext()) {
+            cypher.query("MATCH (pp:People) WHERE pp.username = '" + collaborators.getPeople() +
+                    "' MATCH (p:Project) WHERE p.name = " +
+                    "'" + collaborators.getProjectName() + "'" +
+                    " CREATE (p)-[:COLLABORATED_BY]->(pp)");
+        }
+
+    }
 
     public Iterable<Map<String,Object>> getProjects() {
         return IteratorUtil.asCollection(cypher.query(
@@ -89,6 +90,12 @@ public class GraphService {
     public Iterable<Map<String,Object>> getPeopleByUsername(String username) {
         return IteratorUtil.asCollection(cypher.query(
                 "MATCH (n:People) WHERE n.username = '"+username+"' RETURN n"));
+    }
+
+    public Iterable<Map<String,Object>> getRelation(Collaborator collaborators) {
+        return IteratorUtil.asCollection(cypher.query(
+                "MATCH (a:Project{name:'"+collaborators.getProjectName()+"'})-[:COLLABORATED_BY]->" +
+                        "(b:People{username:'"+collaborators.getPeople()+"'}) RETURN a,b LIMIT 1"));
     }
 
 
