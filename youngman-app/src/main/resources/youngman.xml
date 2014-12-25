@@ -4,7 +4,20 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
-    <bean name="fetchGitJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean" >
+
+    <bean id="youngmanDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://localhost:3306/youngman" />
+        <property name="username" value="youngman" />
+        <property name="password" value="pingu123" />
+    </bean>
+
+    <bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase">
+        <property name="dataSource" ref="youngmanDataSource"/>
+        <property name="changeLog" value="classpath:liquibase/youngman.db.changelog.xml"/>
+    </bean>
+
+    <bean id="fetchGitJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean" >
         <property name="jobClass" value="no.api.youngman.quartz.FetchGitJob" />
         <!--property name="jobDataAsMap">
             <map>
