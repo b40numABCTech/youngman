@@ -1,4 +1,4 @@
-package youngman.properties;
+package no.api.youngman.properties;
 
 import no.api.youngman.properties.CoreProperties;
 import org.eclipse.jetty.util.StringUtil;

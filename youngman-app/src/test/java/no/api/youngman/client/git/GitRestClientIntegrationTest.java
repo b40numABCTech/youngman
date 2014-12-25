@@ -1,6 +1,5 @@
-package youngman.client.git;
+package no.api.youngman.client.git;
 
-import no.api.youngman.client.git.GitRestClient;
 import no.api.youngman.model.People;
 import no.api.youngman.model.Project;
 import org.junit.Assert;
