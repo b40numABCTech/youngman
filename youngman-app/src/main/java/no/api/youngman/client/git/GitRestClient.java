@@ -58,11 +58,11 @@ public class GitRestClient {
 
     private String extractEndpoint(HttpHeaders header) {
         List<String> links = header.get("Link");
-        if(links != null && !links.isEmpty()) {
+        if (links != null && !links.isEmpty()) {
             String[] parts = links.get(0).split(",");
-            for(String eachParts : parts) {
-                if(eachParts.contains("rel=\"next\"")){
-                    return eachParts.substring(eachParts.indexOf("<") + 1,eachParts.indexOf(">"));
+            for (String eachParts : parts) {
+                if (eachParts.contains("rel=\"next\"")) {
+                    return eachParts.substring(eachParts.indexOf("<") + 1, eachParts.indexOf(">"));
                 }
             }
         }
@@ -71,7 +71,7 @@ public class GitRestClient {
 
     private List<People> transformPeople(ResponseEntity<String> responseEntity) {
         JsonArray jsonArray = JsonUtil.transformToArray(responseEntity);
-        if(jsonArray != null) {
+        if (jsonArray != null) {
             return readPeopleJSONArray(jsonArray);
         } else {
             return Collections.EMPTY_LIST;
@@ -80,10 +80,10 @@ public class GitRestClient {
 
     private List<People> readPeopleJSONArray(JsonArray elementList) {
         List<People> peopleLists = new ArrayList<>();
-        for(JsonElement eachElement: elementList) {
+        for (JsonElement eachElement : elementList) {
             JsonObject jsonObject = eachElement.getAsJsonObject();
             People people = readPeopleFromGit(JsonUtil.jsonObjectLoader(jsonObject, "url"));
-            if(people != null) {
+            if (people != null) {
                 peopleLists.add(people);
             }
         }
@@ -96,7 +96,7 @@ public class GitRestClient {
         JsonParser parser = new JsonParser();
         JsonElement element = parser.parse(jsonResponse);
 
-        if(element.isJsonObject()) {
+        if (element.isJsonObject()) {
             JsonObject jsonObject = element.getAsJsonObject();
             People people = new People();
             people.setUsername(JsonUtil.jsonObjectLoader(jsonObject, "login"));
@@ -104,9 +104,9 @@ public class GitRestClient {
             people.setRealname(JsonUtil.jsonObjectLoader(jsonObject, "name"));
             people.setEmail(JsonUtil.jsonObjectLoader(jsonObject, "email"));
             people.setId(JsonUtil.jsonObjectLoaderLong(jsonObject, "id"));
-            people.setLastupdate(JsonUtil.jsonObjectLoaderDateTime(jsonObject,"updated_at"));
+            people.setLastupdate(JsonUtil.jsonObjectLoaderDateTime(jsonObject, "updated_at"));
             return people;
-        }else{
+        } else {
             return null;
         }
     }
@@ -124,8 +124,8 @@ public class GitRestClient {
 
     private List<Project> transformProject(ResponseEntity<String> responseEntity) {
         JsonArray jsonArray = JsonUtil.transformToArray(responseEntity);
-        if(jsonArray !=null) {
-            return  readProjectJSONArray(jsonArray);
+        if (jsonArray != null) {
+            return readProjectJSONArray(jsonArray);
         } else {
             return Collections.EMPTY_LIST;
         }
@@ -133,11 +133,11 @@ public class GitRestClient {
 
     private List<Project> readProjectJSONArray(JsonArray elementList) {
         List<Project> projectLists = new ArrayList<>();
-        for(JsonElement eachElement: elementList) {
-            if(eachElement.isJsonObject()) {
+        for (JsonElement eachElement : elementList) {
+            if (eachElement.isJsonObject()) {
                 JsonObject jsonObject = eachElement.getAsJsonObject();
-                Project project = readProjectFromGit(JsonUtil.jsonObjectLoader(jsonObject,"url"));
-                if(project != null) {
+                Project project = readProjectFromGit(JsonUtil.jsonObjectLoader(jsonObject, "url"));
+                if (project != null) {
                     projectLists.add(project);
                 }
             }
@@ -151,7 +151,7 @@ public class GitRestClient {
         JsonParser parser = new JsonParser();
         JsonElement element = parser.parse(jsonResponse);
 
-        if(element.isJsonObject()) {
+        if (element.isJsonObject()) {
             JsonObject jsonObject = element.getAsJsonObject();
             Project project = new Project();
             project.setProjectName(JsonUtil.jsonObjectLoader(jsonObject, "name"));
@@ -160,10 +160,10 @@ public class GitRestClient {
             project.setLang(JsonUtil.jsonObjectLoader(jsonObject, "language"));
             project.setProjectUrl(JsonUtil.jsonObjectLoader(jsonObject, "url"));
             project.setContributorUrl(JsonUtil.jsonObjectLoader(jsonObject, "contributors_url"));
-            project.setLastupdate(JsonUtil.jsonObjectLoaderDateTime(jsonObject,"updated_at"));
-            project.setId(JsonUtil.jsonObjectLoaderLong(jsonObject,"id"));
+            project.setLastupdate(JsonUtil.jsonObjectLoaderDateTime(jsonObject, "updated_at"));
+            project.setId(JsonUtil.jsonObjectLoaderLong(jsonObject, "id"));
             return project;
-        }else{
+        } else {
             return null;
         }
     }
@@ -171,26 +171,34 @@ public class GitRestClient {
     public List<Contributor> getAllContributor(List<Project> projects) {
 
         List<Contributor> contributors = new ArrayList<>();
-        for(Project eachProject : projects) {
-            if(eachProject.getContributorUrl() != null) {
-                String endpoint = eachProject.getContributorUrl();
-                do {
-                    ResponseEntity<String> responseEntity = getResponseFromGit(endpoint);
-                    JsonArray members = JsonUtil.transformToArray(responseEntity);
-                    List<Contributor> eachContributors =
-                            readContributorJSONArray(members, eachProject.getId());
-                    contributors.addAll(eachContributors);
-                    endpoint = extractEndpoint(responseEntity.getHeaders());
-                } while (StringUtil.isNotBlank(endpoint));
-            }
+        for (Project eachProject : projects) {
+            List<Contributor> eachContributors = getContributorByProject(eachProject);
+            contributors.addAll(eachContributors);
         }
         return contributors;
     }
 
-    private List<Contributor> readContributorJSONArray(JsonArray elementList,Long projectId) {
+    public List<Contributor> getContributorByProject(Project project) {
+
         List<Contributor> contributors = new ArrayList<>();
-        for(JsonElement eachElement : elementList) {
-            if(eachElement.isJsonObject()) {
+        if (project.getContributorUrl() != null) {
+            String endpoint = project.getContributorUrl();
+            do {
+                ResponseEntity<String> responseEntity = getResponseFromGit(endpoint);
+                JsonArray members = JsonUtil.transformToArray(responseEntity);
+                List<Contributor> eachContributors =
+                        readContributorJSONArray(members, project.getId());
+                contributors.addAll(eachContributors);
+                endpoint = extractEndpoint(responseEntity.getHeaders());
+            } while (StringUtil.isNotBlank(endpoint));
+        }
+        return contributors;
+    }
+
+    private List<Contributor> readContributorJSONArray(JsonArray elementList, Long projectId) {
+        List<Contributor> contributors = new ArrayList<>();
+        for (JsonElement eachElement : elementList) {
+            if (eachElement.isJsonObject()) {
                 JsonObject jsonObject = eachElement.getAsJsonObject();
                 Contributor contributor = new Contributor();
                 contributor.setPeopleId(JsonUtil.jsonObjectLoaderLong(jsonObject, "id"));
@@ -202,17 +210,18 @@ public class GitRestClient {
     }
 
 
-
-    private HttpHeaders addAuthentication(){
+    private HttpHeaders addAuthentication() {
         HttpHeaders headers = new HttpHeaders();
-        String plainCreds = new StringBuilder(properties.getGitUsername()).append(":").append(properties.getGitPassword()).toString();
+        String plainCreds =
+                new StringBuilder(properties.getGitUsername()).append(":").append(properties.getGitPassword())
+                        .toString();
 
         String base64Creds = Base64.encodeBase64String(plainCreds.getBytes());
         headers.add("Authorization", "Basic " + base64Creds);
         return headers;
     }
 
-    private ResponseEntity<String> getResponseFromGit(String address){
+    private ResponseEntity<String> getResponseFromGit(String address) {
         HttpHeaders headers = addAuthentication();
         HttpEntity<String> request = new HttpEntity<String>(headers);
         ResponseEntity<String> response = restClient.exchange(address, HttpMethod.GET, request, String.class);
