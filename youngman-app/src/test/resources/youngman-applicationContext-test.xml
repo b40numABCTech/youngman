@@ -21,4 +21,7 @@
         </property>
     </bean>
     <bean id="gitRestClient" class="no.api.youngman.client.git.GitRestClient" />
+
+    <bean id="projectManager" class="no.api.youngman.manager.ProjectManger" />
+    <bean id="peopleManager" class="no.api.youngman.manager.PeopleManager" />
 </beans>
