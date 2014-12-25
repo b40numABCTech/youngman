@@ -10,7 +10,7 @@ import java.sql.PreparedStatement;
 
 public class ContributorDAOImpl implements ContributorsDAO {
 
-    private static final String SQL_INSERT = "INSERT INTO collaborator (projectname, people) " +
+    private static final String SQL_INSERT = "INSERT INTO collaborator (peopleid, projectid) " +
             "VALUES (?, ?)";
 
     private JdbcTemplate jdbcTemplate;
@@ -25,8 +25,8 @@ public class ContributorDAOImpl implements ContributorsDAO {
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(SQL_INSERT);
             int index = 1;
-            ps.setString(index++, model.getProjectName());
-            ps.setString(index, model.getPeople());
+            ps.setLong(index++, model.getPeopleId());
+            ps.setLong(index, model.getProjectId());
             return ps;
         });
         return model;

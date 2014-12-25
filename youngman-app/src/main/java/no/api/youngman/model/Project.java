@@ -1,12 +1,17 @@
 package no.api.youngman.model;
 
+import org.joda.time.DateTime;
+
 public class Project {
+
+    private Long id;
     private String projectName;
     private String projectFullName;
     private String description;
     private String lang;
     private String projectUrl;
     private String contributorUrl;
+    private DateTime lastupdate;
 
     public String getProjectName() {
         return projectName;
@@ -54,5 +59,21 @@ public class Project {
 
     public void setContributorUrl(String contributorUrl) {
         this.contributorUrl = contributorUrl;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public DateTime getLastupdate() {
+        return lastupdate;
+    }
+
+    public void setLastupdate(DateTime lastupdate) {
+        this.lastupdate = lastupdate;
     }
 }

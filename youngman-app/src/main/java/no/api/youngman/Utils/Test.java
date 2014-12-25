@@ -18,8 +18,9 @@ public class Test {
         Project project = new Project();
         project.setProjectName("AID");
         project.setProjectFullName("AID");
-        project.setDesc("111");
+        project.setDescription("111");
         project.setLang("EN");
+        project.setId(10L);
 
         service.createProjectNode(project);
 
@@ -27,12 +28,13 @@ public class Test {
         people.setUsername("user1");
         people.setAvatarUrl("sdjklfkjldsfnds");
         people.setEmail("user1@sldfsd.com");
+        people.setId(18L);
 
         service.createPeopleNode(people);
 
         Contributor collaborator = new Contributor();
-        collaborator.setProjectName("AID");
-        collaborator.setPeople("user1");
+        collaborator.setProjectId(10L);
+        collaborator.setProjectId(18L);
 
         service.createCollaborateRelations(collaborator);
     }

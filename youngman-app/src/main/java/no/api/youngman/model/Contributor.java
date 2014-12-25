@@ -1,22 +1,22 @@
 package no.api.youngman.model;
 
 public class Contributor {
-    String people;
-    String projectName;
+    Long peopleId;
+    Long projectId;
 
-    public String getPeople() {
-        return people;
+    public Long getProjectId() {
+        return projectId;
     }
 
-    public void setPeople(String people) {
-        this.people = people;
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
     }
 
-    public String getProjectName() {
-        return projectName;
+    public Long getPeopleId() {
+        return peopleId;
     }
 
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
+    public void setPeopleId(Long peopleId) {
+        this.peopleId = peopleId;
     }
 }

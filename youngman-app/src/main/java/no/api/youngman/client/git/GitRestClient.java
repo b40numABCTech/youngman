@@ -51,6 +51,11 @@ public class GitRestClient {
         return peoples;
     }
 
+    public People getPeopleByUsername(String username) {
+        String endpoint = properties.getGitApiEndpoint() + "/users/" + username;
+        return readPeopleFromGit(endpoint);
+    }
+
     private String extractEndpoint(HttpHeaders header) {
         List<String> links = header.get("Link");
         if(links != null && !links.isEmpty()) {
@@ -98,6 +103,8 @@ public class GitRestClient {
             people.setAvatarUrl(JsonUtil.jsonObjectLoader(jsonObject, "avatar_url"));
             people.setRealname(JsonUtil.jsonObjectLoader(jsonObject, "name"));
             people.setEmail(JsonUtil.jsonObjectLoader(jsonObject, "email"));
+            people.setId(JsonUtil.jsonObjectLoaderLong(jsonObject, "id"));
+            people.setLastupdate(JsonUtil.jsonObjectLoaderDateTime(jsonObject,"updated_at"));
             return people;
         }else{
             return null;
@@ -129,17 +136,36 @@ public class GitRestClient {
         for(JsonElement eachElement: elementList) {
             if(eachElement.isJsonObject()) {
                 JsonObject jsonObject = eachElement.getAsJsonObject();
-                Project project = new Project();
-                project.setProjectName(JsonUtil.jsonObjectLoader(jsonObject,"name"));
-                project.setProjectFullName(JsonUtil.jsonObjectLoader(jsonObject, "full_name"));
-                project.setDescription(JsonUtil.jsonObjectLoader(jsonObject, "description"));
-                project.setLang(JsonUtil.jsonObjectLoader(jsonObject, "language"));
-                project.setProjectUrl(JsonUtil.jsonObjectLoader(jsonObject, "url"));
-                project.setContributorUrl(JsonUtil.jsonObjectLoader(jsonObject, "contributors_url"));
-                projectLists.add(project);
+                Project project = readProjectFromGit(JsonUtil.jsonObjectLoader(jsonObject,"url"));
+                if(project != null) {
+                    projectLists.add(project);
+                }
             }
         }
         return projectLists;
+    }
+
+    private Project readProjectFromGit(String endpoint) {
+        ResponseEntity<String> responseEntity = getResponseFromGit(endpoint);
+        String jsonResponse = responseEntity.getBody();
+        JsonParser parser = new JsonParser();
+        JsonElement element = parser.parse(jsonResponse);
+
+        if(element.isJsonObject()) {
+            JsonObject jsonObject = element.getAsJsonObject();
+            Project project = new Project();
+            project.setProjectName(JsonUtil.jsonObjectLoader(jsonObject, "name"));
+            project.setProjectFullName(JsonUtil.jsonObjectLoader(jsonObject, "full_name"));
+            project.setDescription(JsonUtil.jsonObjectLoader(jsonObject, "description"));
+            project.setLang(JsonUtil.jsonObjectLoader(jsonObject, "language"));
+            project.setProjectUrl(JsonUtil.jsonObjectLoader(jsonObject, "url"));
+            project.setContributorUrl(JsonUtil.jsonObjectLoader(jsonObject, "contributors_url"));
+            project.setLastupdate(JsonUtil.jsonObjectLoaderDateTime(jsonObject,"updated_at"));
+            project.setId(JsonUtil.jsonObjectLoaderLong(jsonObject,"id"));
+            return project;
+        }else{
+            return null;
+        }
     }
 
     public List<Contributor> getAllContributor(List<Project> projects) {
@@ -152,7 +178,7 @@ public class GitRestClient {
                     ResponseEntity<String> responseEntity = getResponseFromGit(endpoint);
                     JsonArray members = JsonUtil.transformToArray(responseEntity);
                     List<Contributor> eachContributors =
-                            readContributorJSONArray(members, eachProject.getProjectName());
+                            readContributorJSONArray(members, eachProject.getId());
                     contributors.addAll(eachContributors);
                     endpoint = extractEndpoint(responseEntity.getHeaders());
                 } while (StringUtil.isNotBlank(endpoint));
@@ -161,14 +187,14 @@ public class GitRestClient {
         return contributors;
     }
 
-    private List<Contributor> readContributorJSONArray(JsonArray elementList,String projectName) {
+    private List<Contributor> readContributorJSONArray(JsonArray elementList,Long projectId) {
         List<Contributor> contributors = new ArrayList<>();
         for(JsonElement eachElement : elementList) {
             if(eachElement.isJsonObject()) {
                 JsonObject jsonObject = eachElement.getAsJsonObject();
                 Contributor contributor = new Contributor();
-                contributor.setPeople(JsonUtil.jsonObjectLoader(jsonObject,"login"));
-                contributor.setProjectName(projectName);
+                contributor.setPeopleId(JsonUtil.jsonObjectLoaderLong(jsonObject, "id"));
+                contributor.setProjectId(projectId);
                 contributors.add(contributor);
             }
         }

@@ -9,7 +9,8 @@ import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 
 public class PeopleDAOImpl implements PeopleDAO {
-    private static final String SQL_INSERT = "INSERT INTO collaborator (username, email, realname, avatarurl) " +
+    private static final String SQL_INSERT = "INSERT INTO collaborator (id, "+
+            "username, email, realname, avatarurl, lastupdate) " +
             "VALUES (?, ?, ?)";
 
     private JdbcTemplate jdbcTemplate;
@@ -24,10 +25,12 @@ public class PeopleDAOImpl implements PeopleDAO {
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(SQL_INSERT);
             int index = 1;
+            ps.setLong(index++, model.getId());
             ps.setString(index++, model.getUsername());
             ps.setString(index++, model.getEmail());
             ps.setString(index++, model.getRealname());
-            ps.setString(index, model.getAvatarUrl());
+            ps.setString(index++, model.getAvatarUrl());
+            ps.setLong(index, model.getLastupdate().getMillis());
             return ps;
         });
         return model;

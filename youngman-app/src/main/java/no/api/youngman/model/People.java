@@ -1,10 +1,16 @@
 package no.api.youngman.model;
 
+import org.joda.time.DateTime;
+
 public class People {
+
+    private Long id;
     private String username;
     private String avatarUrl;
     private String realname;
     private String email;
+    private DateTime lastupdate;
+
 
     public String getUsername() {
         return username;
@@ -36,5 +42,21 @@ public class People {
 
     public void setRealname(String realname) {
         this.realname = realname;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public DateTime getLastupdate() {
+        return lastupdate;
+    }
+
+    public void setLastupdate(DateTime lastupdate) {
+        this.lastupdate = lastupdate;
     }
 }

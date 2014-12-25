@@ -37,7 +37,7 @@ public class GraphService {
         Map<String, Object> params = new HashMap<>();
         params.put("1",project.getProjectName());
         params.put("2",project.getProjectFullName());
-        params.put("3",project.getDesc());
+        params.put("3",project.getDescription());
         params.put("4",project.getLang());
         Iterable<Map<String,Object>> iterable = getProjectsByName(project.getProjectName());
         if(!iterable.iterator().hasNext()){
@@ -63,9 +63,9 @@ public class GraphService {
     public void createCollaborateRelations(Contributor collaborators){
         Iterable<Map<String,Object>> iterable = getRelation(collaborators);
         if(!iterable.iterator().hasNext()) {
-            cypher.query("MATCH (pp:People) WHERE pp.username = '" + collaborators.getPeople() +
+            cypher.query("MATCH (pp:People) WHERE pp.username = '" + collaborators.getPeopleId() +
                     "' MATCH (p:Project) WHERE p.name = " +
-                    "'" + collaborators.getProjectName() + "'" +
+                    "'" + collaborators.getProjectId() + "'" +
                     " CREATE (p)-[:COLLABORATED_BY]->(pp)");
         }
 
@@ -93,8 +93,8 @@ public class GraphService {
 
     public Iterable<Map<String,Object>> getRelation(Contributor collaborators) {
         return IteratorUtil.asCollection(cypher.query(
-                "MATCH (a:Project{name:'"+collaborators.getProjectName()+"'})-[:COLLABORATED_BY]->" +
-                        "(b:People{username:'"+collaborators.getPeople()+"'}) RETURN a,b LIMIT 1"));
+                "MATCH (a:Project{name:'"+collaborators.getProjectId()+"'})-[:COLLABORATED_BY]->" +
+                        "(b:People{username:'"+collaborators.getProjectId()+"'}) RETURN a,b LIMIT 1"));
     }
 
 
