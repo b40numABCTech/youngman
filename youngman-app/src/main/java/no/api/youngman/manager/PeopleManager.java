@@ -25,10 +25,8 @@ public class PeopleManager{
         List<People> peopleList = gitRestClient.getAllMember();
         System.out.println("total : " + peopleList.size());
         if(peopleList.size() != 0){
-            for(int i = 0; i < peopleList.size(); i++ ){
-                System.out.println("people username : " + peopleList.get(i).getUsername());
-                service.createPeopleNode(peopleList.get(i));
-            }
+            service.createPeopleNode(peopleList);
         }
     }
+
 }

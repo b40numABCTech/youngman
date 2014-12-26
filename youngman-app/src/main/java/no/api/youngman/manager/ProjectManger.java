@@ -22,10 +22,9 @@ public class ProjectManger{
 
     public void importProject() {
         List<Project> projectList = gitRestClient.getAllProject();
+        System.out.println("total : " + projectList.size());
         if(projectList.size() != 0){
-            for(int i = 0; i < projectList.size(); i++ ){
-                service.createProjectNode(projectList.get(i));
-            }
+            service.createProjectNode(projectList);
         }
 
     }

@@ -7,6 +7,7 @@ import org.neo4j.helpers.collection.IteratorUtil;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.neo4j.helpers.collection.MapUtil.map;
@@ -32,49 +33,57 @@ public class GraphService {
         }
     }
 
-    public void createProjectNode(Project project){
-
-        Map<String, Object> params = new HashMap<>();
-        params.put("1",project.getProjectName());
-        params.put("2",project.getProjectFullName());
-        params.put("3",project.getDescription());
-        params.put("4",project.getLang());
-        params.put("5",project.getProjectUrl());
-        params.put("6",project.getContributorUrl());
-        params.put("7",project.getId());
-        params.put("8",project.getLastupdate().toString("dd/MM/yyyy"));
-        Iterable<Map<String,Object>> iterable = getProjectsByName(project.getProjectName());
-        if(!iterable.iterator().hasNext()){
-            cypher.query("CREATE (p:Project {projectname:{1}, projectfullname:{2}, description:{3}, lang:{4}, " +
-                            "projecturl:{5}, contributorurl:{6}, id:{7}, lastupdate:{8}}) RETURN p",
-                    params);
+    public void createProjectNode(List<Project> projects){
+        StringBuilder stringBuilder = new StringBuilder();
+        for(int i=0; i< projects.size(); i++){
+            System.out.println("Projects ProjectName : " + projects.get(i).getProjectName());
+            Iterable<Map<String,Object>> iterable = getProjectsByName(projects.get(i).getProjectName());
+            if(!iterable.iterator().hasNext()){
+                stringBuilder.append("CREATE (p"+i+":Project {projectname:'" + projects.get(i).getProjectName() +
+                        "', projectfullname:'" + projects.get(i).getProjectFullName() +
+                        "', description:'" + projects.get(i).getDescription().replace("'","\\'").replace("\"","\\\"")+
+                        "', lang:'" +projects.get(i).getLang()+
+                        "', " +
+                                "projecturl:'" +projects.get(i).getProjectUrl()+
+                        "', contributorurl:'" +projects.get(i).getContributorUrl()+
+                        "', id:'" +projects.get(i).getId()+
+                        "', lastupdate:'" +projects.get(i).getLastupdate().toString("dd/MM/yyyy")+
+                        "'}) ");
+            }
         }
+        cypher.query(stringBuilder.toString());
 
     }
 
-    public void createPeopleNode(People people){
-        Map<String, Object> params = new HashMap<>();
-        params.put("1",people.getUsername());
-        params.put("2",people.getAvatarUrl());
-        params.put("3",people.getEmail());
-        params.put("4",people.getRealname());
-        params.put("5",people.getId());
-        params.put("6",people.getLastupdate().toString("dd/MM/yyyy"));
-        Iterable<Map<String,Object>> iterable = getPeopleByUsername(people.getUsername());
-        if(!iterable.iterator().hasNext()) {
-            cypher.query("CREATE (p:People {username:{1}, avatarurl:{2}, email:{3}, realname:{4}, id:{5}, " +
-                    "lastupdate:{6}}) RETURN p", params);
+    public void createPeopleNode(List<People> peoples){
+        StringBuilder stringBuilder = new StringBuilder();
+        for(int i=0; i< peoples.size(); i++){
+            System.out.println("people username : " + peoples.get(i).getUsername());
+            Iterable<Map<String,Object>> iterable = getPeopleByUsername(peoples.get(i).getUsername());
+            if(!iterable.iterator().hasNext()) {
+                stringBuilder.append("CREATE (p"+i+":People {username:'" + peoples.get(i).getUsername()+
+                        "', avatarurl:'" + peoples.get(i).getAvatarUrl()+
+                        "', email:'" + peoples.get(i).getEmail()+
+                        "', realname:'" + peoples.get(i).getRealname()+
+                        "', id:'" + peoples.get(i).getId()+
+                        "', lastupdate:'" + peoples.get(i).getLastupdate().toString("dd/MM/yyyy")+
+                        "'}) ");
+            }
         }
-
+        cypher.query(stringBuilder.toString());
     }
 
-    public void createCollaborateRelations(Contributor collaborators){
-        Iterable<Map<String,Object>> iterable = getRelation(collaborators);
-        if(!iterable.iterator().hasNext()) {
-            cypher.query("MATCH (pp:People) WHERE pp.username = '" + collaborators.getPeopleId() +
-                    "' MATCH (p:Project) WHERE p.name = " +
-                    "'" + collaborators.getProjectId() + "'" +
-                    " CREATE (p)-[:COLLABORATED_BY]->(pp)");
+    public void createCollaborateRelations(List<Contributor> collaborators){
+        StringBuilder stringBuilder = new StringBuilder();
+        for(int i=0; i< collaborators.size(); i++){
+            System.out.println("collaborators round : " + i);
+            Iterable<Map<String,Object>> iterable = getRelation(collaborators.get(i));
+            if(!iterable.iterator().hasNext()) {
+                cypher.query("MATCH (pp"+i+":People) WHERE pp"+i+".id = '" + collaborators.get(i).getPeopleId() +
+                        "' MATCH (p"+i+":Project) WHERE p"+i+".id = " +
+                        "'" + collaborators.get(i).getProjectId() + "'" +
+                        " CREATE (p"+i+")-[:COLLABORATED_BY]->(pp"+i+") ");
+            }
         }
 
     }

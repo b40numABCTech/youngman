@@ -18,11 +18,15 @@ public class Test {
         Project project = new Project();
         project.setProjectName("AID");
         project.setProjectFullName("AID");
-        project.setDescription("111");
+        project.setDescription("Online statistics for the newspapers. Used for \"most read\" lists in addition to " +
+                "looking good.");
         project.setLang("EN");
         project.setId(10L);
 
-        service.createProjectNode(project);
+
+        System.out.println(project.getDescription().replace("\"","\\\""));
+
+        //service.createProjectNode(project);
 
         People people = new People();
         people.setUsername("user1");
@@ -30,13 +34,13 @@ public class Test {
         people.setEmail("user1@sldfsd.com");
         people.setId(18L);
 
-        service.createPeopleNode(people);
+        //service.createPeopleNode(people);
 
         Contributor collaborator = new Contributor();
         collaborator.setProjectId(10L);
         collaborator.setProjectId(18L);
 
-        service.createCollaborateRelations(collaborator);
+        //service.createCollaborateRelations(collaborator);
     }
 
 }

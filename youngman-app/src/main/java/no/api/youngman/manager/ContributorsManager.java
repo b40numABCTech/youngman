@@ -21,10 +21,9 @@ public class ContributorsManager{
 
     public void importContributors() {
         List<Contributor> contributorList = gitRestClient.getAllContributor(gitRestClient.getAllProject());
+        System.out.println("total : " + contributorList.size());
         if(contributorList.size() != 0){
-            for(int i = 0; i < contributorList.size(); i++ ){
-                service.createCollaborateRelations(contributorList.get(i));
-            }
+                service.createCollaborateRelations(contributorList);
         }
     }
 }
