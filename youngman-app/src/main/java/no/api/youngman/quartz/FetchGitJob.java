@@ -75,5 +75,9 @@ public class FetchGitJob extends QuartzJobBean {
                 contributorDAO.insert(contributor);
             }
         }
+
+        graphService.createProjectNode(lstProject);
+        graphService.createPeopleNode(gitRestClient.getAllMember());
+        graphService.createCollaborateRelations(gitRestClient.getAllContributor(lstProject));
     }
 }
