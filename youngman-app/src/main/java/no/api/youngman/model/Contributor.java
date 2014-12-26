@@ -1,8 +1,8 @@
 package no.api.youngman.model;
 
 public class Contributor {
-    Long peopleId;
     Long projectId;
+    Long peopleId;
 
     public Long getProjectId() {
         return projectId;
