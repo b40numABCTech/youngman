@@ -56,6 +56,7 @@ public class FetchGitJob extends QuartzJobBean {
             } else {
                 projectDAO.update(project);
             }
+            contributorDAO.deleteByProjectId(project.getId());
             List<Contributor>  lstContributor = gitRestClient.getContributorByProject(project);
             for(Contributor contributor : lstContributor) {
                 String username = contributor.getUserName();
@@ -69,8 +70,9 @@ public class FetchGitJob extends QuartzJobBean {
                             peopleDAO.update(people);
                         }
                     }
-                    //stPeopleId.add(contributor.getPeopleId());
+                    stPeopleId.add(contributor.getUserName());
                 }
+                contributorDAO.insert(contributor);
             }
         }
     }
