@@ -187,7 +187,7 @@ public class GitRestClient {
                 ResponseEntity<String> responseEntity = getResponseFromGit(endpoint);
                 JsonArray members = JsonUtil.transformToArray(responseEntity);
                 List<Contributor> eachContributors =
-                        readContributorJSONArray(members, project.getId());
+                        readContributorJSONArray(members, project.getId(), project.getProjectName());
                 contributors.addAll(eachContributors);
                 endpoint = extractEndpoint(responseEntity.getHeaders());
             } while (StringUtil.isNotBlank(endpoint));
@@ -195,14 +195,16 @@ public class GitRestClient {
         return contributors;
     }
 
-    private List<Contributor> readContributorJSONArray(JsonArray elementList, Long projectId) {
+    private List<Contributor> readContributorJSONArray(JsonArray elementList, Long projectId, String projectName) {
         List<Contributor> contributors = new ArrayList<>();
         for (JsonElement eachElement : elementList) {
             if (eachElement.isJsonObject()) {
                 JsonObject jsonObject = eachElement.getAsJsonObject();
                 Contributor contributor = new Contributor();
                 contributor.setPeopleId(JsonUtil.jsonObjectLoaderLong(jsonObject, "id"));
+                contributor.setUserName(JsonUtil.jsonObjectLoader(jsonObject, "login"));
                 contributor.setProjectId(projectId);
+                contributor.setProjectName(projectName);
                 contributors.add(contributor);
             }
         }
