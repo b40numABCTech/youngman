@@ -12,6 +12,8 @@ public class CoreProperties implements InitializingBean {
 
     private final Map<String,String> mapset = new HashMap<>();
 
+    private final String DEFAULT_URL = "http://localhost:7474";
+
     @Override
     public void afterPropertiesSet() throws Exception {
         properties = new Properties();
@@ -32,6 +34,10 @@ public class CoreProperties implements InitializingBean {
 
     public String getGitApiEndpoint() {
         return mapset.get("git.endpoint");
+    }
+
+    public String getNeo4jUrl() {
+        return mapset.get("neo4j.endpoint") == null ? DEFAULT_URL : mapset.get("neo4j.endpoint") ;
     }
 
 

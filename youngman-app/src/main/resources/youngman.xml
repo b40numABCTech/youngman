@@ -19,11 +19,15 @@
 
     <bean id="fetchGitJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean" >
         <property name="jobClass" value="no.api.youngman.quartz.FetchGitJob" />
-        <!--property name="jobDataAsMap">
+        <property name="jobDataAsMap">
             <map>
-                <entry key="purgingContentTask" value-ref="purgingContentTask" />
+                <entry key="graphService" value-ref="graphService" />
+                <entry key="gitRestClient" value-ref="gitRestClient" />
+                <entry key="projectDAO" value-ref="projectDAO" />
+                <entry key="peopleDAO" value-ref="peopleDAO" />
+                <entry key="collaboratorDAO" value-ref="contributorDAO" />
             </map>
-        </property-->
+        </property>
         <property name="durability" value="true" />
     </bean>
 
@@ -33,8 +37,6 @@
         <property name="startDelay" value="1000" />
 
     </bean>
-
-    <bean id="properties" class="no.api.youngman.properties.CoreProperties" />
 
     <bean id="youngmanQuartzScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="quartzProperties">
@@ -58,5 +60,16 @@
 
     <bean id="peopleDAO" class="no.api.youngman.dao.jdbc.PeopleDAOImpl"/>
     <bean id="projectDAO" class="no.api.youngman.dao.jdbc.ProjectDAOImpl"/>
-    <bean id="collaboratorDAO" class="no.api.youngman.dao.jdbc.ContributorDAOImpl"/>
+    <bean id="contributorDAO" class="no.api.youngman.dao.jdbc.ContributorDAOImpl"/>
+
+    <bean id="properties" class="no.api.youngman.properties.CoreProperties" />
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+        <property name="requestFactory">
+            <bean class="org.springframework.http.client.HttpComponentsClientHttpRequestFactory" />
+        </property>
+    </bean>
+    <bean id="gitRestClient" class="no.api.youngman.client.git.GitRestClient" />
+    <bean id="graphService" class="no.api.youngman.neo4j.GraphService">
+        <constructor-arg name="uri" value="#{properties.neo4jUrl}"/>
+    </bean>
 </beans>

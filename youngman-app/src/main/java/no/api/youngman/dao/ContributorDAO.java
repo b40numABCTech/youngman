@@ -2,6 +2,6 @@ package no.api.youngman.dao;
 
 import no.api.youngman.model.Contributor;
 
-public interface ContributorsDAO {
+public interface ContributorDAO {
     Contributor insert(Contributor model);
 }

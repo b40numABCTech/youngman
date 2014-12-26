@@ -1,6 +1,6 @@
 package no.api.youngman.dao.jdbc;
 
-import no.api.youngman.dao.ContributorsDAO;
+import no.api.youngman.dao.ContributorDAO;
 import no.api.youngman.model.Contributor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -8,7 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 
-public class ContributorDAOImpl implements ContributorsDAO {
+public class ContributorDAOImpl implements ContributorDAO {
 
     private static final String SQL_INSERT = "INSERT INTO collaborator (peopleid, projectid) " +
             "VALUES (?, ?)";

@@ -4,16 +4,12 @@ import no.api.youngman.model.Contributor;
 import no.api.youngman.model.People;
 import no.api.youngman.model.Project;
 import org.neo4j.helpers.collection.IteratorUtil;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.neo4j.helpers.collection.MapUtil.map;
-
-/**
- *
- */
 public class GraphService {
     private final CypherExecutor cypher;
     public GraphService(String uri) {

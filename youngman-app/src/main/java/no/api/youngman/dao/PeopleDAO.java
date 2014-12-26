@@ -4,4 +4,6 @@ import no.api.youngman.model.People;
 
 public interface PeopleDAO {
     People insert(People model);
+    boolean update(People model);
+    People get(String username);
 }
