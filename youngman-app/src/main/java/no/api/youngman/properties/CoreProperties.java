@@ -1,7 +1,9 @@
 package no.api.youngman.properties;
 
+import org.eclipse.jetty.util.StringUtil;
 import org.springframework.beans.factory.InitializingBean;
 
+import java.io.Console;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -21,6 +23,13 @@ public class CoreProperties implements InitializingBean {
 
         for (Map.Entry<?, ?> eachEntry : properties.entrySet()) {
             mapset.put((String) eachEntry.getKey() ,(String) eachEntry.getValue());
+        }
+
+        Console console = System.console();
+        if(StringUtil.isBlank(getGitUsername()) || StringUtil.isBlank(getGitPassword())) {
+           System.out.println("missing git.username & git.password");
+           mapset.put("git.username", console.readLine("Enter username: "));
+           mapset.put("git.password", new String( console.readPassword("Enter password :") ));
         }
     }
 
