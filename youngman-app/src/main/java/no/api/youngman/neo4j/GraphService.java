@@ -13,9 +13,11 @@ import java.util.Map;
 
 public class GraphService {
     private final CypherExecutor cypher;
+
     public GraphService(String uri) {
         cypher = createCypherExecutor(uri);
     }
+
     private CypherExecutor createCypherExecutor(String uri) {
         try {
             String auth = new URL(uri).getUserInfo();
