@@ -19,15 +19,15 @@
 
     <bean id="fetchGitJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean" >
         <property name="jobClass" value="no.api.youngman.quartz.FetchGitJob" />
-        <property name="jobDataAsMap">
-            <map>
-                <entry key="graphService" value-ref="graphService" />
-                <entry key="gitRestClient" value-ref="gitRestClient" />
-                <entry key="projectDAO" value-ref="projectDAO" />
-                <entry key="peopleDAO" value-ref="peopleDAO" />
-                <entry key="collaboratorDAO" value-ref="contributorDAO" />
-            </map>
-        </property>
+        <!--<property name="jobDataAsMap">-->
+            <!--<map>-->
+                <!--<entry key="graphService" value-ref="graphService" />-->
+                <!--<entry key="gitRestClient" value-ref="gitRestClient" />-->
+                <!--<entry key="projectDAO" value-ref="projectDAO" />-->
+                <!--<entry key="peopleDAO" value-ref="peopleDAO" />-->
+                <!--<entry key="collaboratorDAO" value-ref="contributorDAO" />-->
+            <!--</map>-->
+        <!--</property>-->
         <property name="durability" value="true" />
     </bean>
 
@@ -56,6 +56,20 @@
         <property name="overwriteExistingJobs" value="true" />
         <property name="waitForJobsToCompleteOnShutdown" value="true" />
         <property name="startupDelay" value="10" />
+        <property name="triggers">
+            <list>
+                <ref bean="fetchGitTrigger" />
+            </list>
+        </property>
+        <property name="schedulerContextAsMap">
+            <map>
+                <entry key="graphService" value-ref="graphService" />
+                <entry key="gitRestClient" value-ref="gitRestClient" />
+                <entry key="projectDAO" value-ref="projectDAO" />
+                <entry key="peopleDAO" value-ref="peopleDAO" />
+                <entry key="collaboratorDAO" value-ref="contributorDAO" />
+            </map>
+        </property>
     </bean>
 
     <bean id="peopleDAO" class="no.api.youngman.dao.jdbc.PeopleDAOImpl"/>
