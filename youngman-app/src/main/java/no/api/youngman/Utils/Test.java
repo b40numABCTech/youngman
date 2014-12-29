@@ -11,36 +11,36 @@ import no.api.youngman.neo4j.GraphService;
 public class Test {
 
     public static void main(String[] args) {
-        GraphService service=new GraphService(Neo4jUtil.getNeo4jUrl());
-        //service.createProjectNode("transition");
-        //Iterable<Map<String,Object>> projects = service.getProjects();
-
-        Project project = new Project();
-        project.setProjectName("AID");
-        project.setProjectFullName("AID");
-        project.setDescription("Online statistics for the newspapers. Used for \"most read\" lists in addition to " +
-                "looking good.");
-        project.setLang("EN");
-        project.setId(10L);
-
-
-        System.out.println(project.getDescription().replace("\"","\\\""));
-
-        //service.createProjectNode(project);
-
-        People people = new People();
-        people.setUsername("user1");
-        people.setAvatarUrl("sdjklfkjldsfnds");
-        people.setEmail("user1@sldfsd.com");
-        people.setId(18L);
-
-        //service.createPeopleNode(people);
-
-        Contributor collaborator = new Contributor();
-        collaborator.setProjectId(10L);
-        collaborator.setProjectId(18L);
-
-        //service.createCollaborateRelations(collaborator);
+//        GraphService service=new GraphService(Neo4jUtil.getNeo4jUrl());
+//        //service.createProjectNode("transition");
+//        //Iterable<Map<String,Object>> projects = service.getProjects();
+//
+//        Project project = new Project();
+//        project.setProjectName("AID");
+//        project.setProjectFullName("AID");
+//        project.setDescription("Online statistics for the newspapers. Used for \"most read\" lists in addition to " +
+//                "looking good.");
+//        project.setLang("EN");
+//        project.setId(10L);
+//
+//
+//        System.out.println(project.getDescription().replace("\"","\\\""));
+//
+//        //service.createProjectNode(project);
+//
+//        People people = new People();
+//        people.setUsername("user1");
+//        people.setAvatarUrl("sdjklfkjldsfnds");
+//        people.setEmail("user1@sldfsd.com");
+//        people.setId(18L);
+//
+//        //service.createPeopleNode(people);
+//
+//        Contributor collaborator = new Contributor();
+//        collaborator.setProjectId(10L);
+//        collaborator.setProjectId(18L);
+//
+//        //service.createCollaborateRelations(collaborator);
     }
 
 }
