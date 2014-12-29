@@ -10,10 +10,10 @@ import java.sql.PreparedStatement;
 
 public class ContributorDAOImpl implements ContributorDAO {
 
-    private static final String SQL_INSERT = "INSERT INTO collaborator (peopleid, projectid, username, projectname) " +
-            "VALUES (?, ?)";
+    private static final String SQL_INSERT = "INSERT INTO contributor (peopleid, projectid, username, projectname) " +
+            "VALUES (?, ?, ?, ?)";
 
-    private static final String SQL_DELETE = "DELETE FROM collaborator WHERE projectid = ?";
+    private static final String SQL_DELETE = "DELETE FROM contributor WHERE projectid = ?";
 
     private JdbcTemplate jdbcTemplate;
 

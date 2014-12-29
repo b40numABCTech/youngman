@@ -16,6 +16,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -226,8 +227,13 @@ public class GitRestClient {
     private ResponseEntity<String> getResponseFromGit(String address) {
         HttpHeaders headers = addAuthentication();
         HttpEntity<String> request = new HttpEntity<String>(headers);
-        ResponseEntity<String> response = restClient.exchange(address, HttpMethod.GET, request, String.class);
-        return response;
+        try {
+            ResponseEntity<String> response = restClient.exchange(address, HttpMethod.GET, request, String.class);
+            return response;
+        }catch (HttpClientErrorException ex){
+            System.out.println("error cann't read " + address);
+            throw ex;
+        }
     }
 
 }

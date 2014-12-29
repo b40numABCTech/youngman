@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+    <bean id="youngmanDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://localhost:3306/youngman" />
+        <property name="username" value="youngman" />
+        <property name="password" value="pingu123" />
+    </bean>
+
+    <bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase">
+        <property name="dataSource" ref="youngmanDataSource"/>
+        <property name="changeLog" value="classpath:liquibase/youngman.db.changelog.xml"/>
+    </bean>
+
+    <bean id="properties" class="no.api.youngman.properties.CoreProperties" />
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+        <property name="requestFactory">
+            <bean class="org.springframework.http.client.HttpComponentsClientHttpRequestFactory" />
+        </property>
+    </bean>
+
+    <bean id="graphService" class="no.api.youngman.neo4j.GraphService">
+        <constructor-arg name="uri" value="#{properties.neo4jUrl}"/>
+    </bean>
+
+    <bean id="peopleDAO" class="no.api.youngman.dao.jdbc.PeopleDAOImpl">
+        <property name="dataSource" ref="youngmanDataSource"/>
+    </bean>
+    <bean id="projectDAO" class="no.api.youngman.dao.jdbc.ProjectDAOImpl">
+        <property name="dataSource" ref="youngmanDataSource" />
+    </bean>
+    <bean id="contributorDAO" class="no.api.youngman.dao.jdbc.ContributorDAOImpl">
+        <property name="dataSource" ref="youngmanDataSource" />
+    </bean>
+
+    <bean id="gitRestClient" class="no.api.youngman.client.git.GitRestClient" />
+</beans>

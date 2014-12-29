@@ -3,6 +3,8 @@ package no.api.youngman.dao.jdbc;
 import no.api.youngman.dao.ProjectDAO;
 import no.api.youngman.model.Project;
 import org.joda.time.DateTime;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -15,13 +17,15 @@ import java.sql.SQLException;
 
 public class ProjectDAOImpl implements ProjectDAO {
 
+    private Logger log = LoggerFactory.getLogger(ProjectDAO.class.getName());
+
     private static final String COLUMNS = "id, projectname, projectfullname, description, lang,  " +
             "projecturl, contributorurl, lastupdate";
 
     private static final String SQL_INSERT = "INSERT INTO project (" + COLUMNS + ") " +
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-    private static final String SQL_UPDATE = "UPDATE INTO project SET projectname = ?, projectfullname = ?, " +
+    private static final String SQL_UPDATE = "UPDATE project SET projectname = ?, projectfullname = ?, " +
             "description = ?, lang = ?, projecturl = ?, contributorurl = ?, lastupdate = ? WHERE id = ?";
 
     private static final String SQL_GET = "SELECT " + COLUMNS + " FROM project WHERE id = ?";
@@ -53,19 +57,21 @@ public class ProjectDAOImpl implements ProjectDAO {
 
     @Override
     public boolean update(Project model) {
-        return jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement(SQL_UPDATE);
-            int index = 1;
-            ps.setString(index++, model.getProjectName());
-            ps.setString(index++, model.getProjectFullName());
-            ps.setString(index++, model.getDescription());
-            ps.setString(index++, model.getLang());
-            ps.setString(index++, model.getProjectUrl());
-            ps.setString(index++, model.getContributorUrl());
-            ps.setLong(index++, model.getLastupdate().getMillis());
-            ps.setLong(index, model.getId());
-            return ps;
-        }) > 0;
+        try {
+    return jdbcTemplate.update( SQL_UPDATE
+            , model.getProjectName()
+            , model.getProjectFullName()
+            , model.getDescription()
+            , model.getLang()
+            , model.getProjectUrl()
+            , model.getContributorUrl()
+            , model.getLastupdate().getMillis()
+            , model.getId()
+            ) > 0;
+        }catch (Exception ex) {
+            log.error("cannot save project model projectid={}, projectname={}, projecturl={}",model.getId(),model.getProjectName(),model.getProjectUrl());
+            throw new RuntimeException( ex );
+        }
     }
 
     @Override
