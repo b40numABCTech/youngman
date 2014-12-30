@@ -162,25 +162,25 @@ public class GraphService {
 
     private Project convertMapToProject(Map<String, Object> map) {
         Project project = new Project();
-        project.setId((Long) map.get("id"));
+        project.setId(Long.parseLong( (String) map.get("id") ));
         project.setProjectName((String) map.get("projectname"));
         project.setProjectFullName((String) map.get("projectfullname"));
         project.setDescription((String) map.get("description"));
         project.setLang((String) map.get("lang"));
         project.setProjectUrl((String) map.get("projecturl"));
         project.setContributorUrl((String) map.get("contributorurl"));
-        project.setLastupdate(new DateTime(map.get("lastupdate")));
+        project.setLastupdate(new DateTime(Long.parseLong((String) map.get("lastupdate"))));
         return project;
     }
 
     private People convertMapToPeople(Map<String, Object> map) {
         People people = new People();
-        people.setId((Long) map.get("id"));
+        people.setId(Long.parseLong( (String) map.get("id")));
         people.setUsername((String) map.get("username"));
         people.setEmail((String) map.get("email"));
         people.setRealname((String) map.get("realname"));
         people.setAvatarUrl((String) map.get("avatarurl"));
-        people.setLastupdate(new DateTime(map.get("lastupdate")));
+        people.setLastupdate(new DateTime( Long.parseLong((String) map.get("lastupdate"))));
         return people;
     }
 
