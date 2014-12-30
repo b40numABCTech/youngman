@@ -29,7 +29,9 @@ public class ProjectDAOImpl implements ProjectDAO {
     private static final String SQL_UPDATE = "UPDATE project SET projectname = ?, projectfullname = ?, " +
             "description = ?, lang = ?, projecturl = ?, contributorurl = ?, lastupdate = ? WHERE id = ?";
 
-    private static final String SQL_GET = "SELECT " + COLUMNS + " FROM project WHERE id = ?";
+    private static final String SQL_GET = "SELECT " + COLUMNS + " FROM project WHERE projectname = ?";
+
+    private static final String SQL_SELECT = "SELECT " + COLUMNS + " FROM project";
 
     private static final String SQL_SELECT_BY_USERNAME = "SELECT p.id, p.projectname, p.projectfullname, " +
             "p.description, p.lang, p.projecturl, p.contributorurl, p.lastupdate FROM project p, contributor c " +
@@ -80,11 +82,21 @@ public class ProjectDAOImpl implements ProjectDAO {
     }
 
     @Override
-    public Project get(Long id) {
+    public Project get(String projectName) {
         try {
-            return jdbcTemplate.queryForObject(SQL_GET, new Object[] {id}, new ProjectMapper());
+            return jdbcTemplate.queryForObject(SQL_GET, new Object[] {projectName}, new ProjectMapper());
         } catch (EmptyResultDataAccessException e) {
             return null;
+        }
+    }
+
+    @Override
+    public List<Project> select() {
+        try {
+            return jdbcTemplate.queryForList( SQL_SELECT, Project.class);
+        }catch (Exception ex) {
+            log.error("cannot retrive peoples");
+            throw new RuntimeException( ex );
         }
     }
 

@@ -31,6 +31,8 @@ public class PeopleDAOImpl implements PeopleDAO {
 
     private static final String SQL_GET = "SELECT " + COLUMNS + " FROM people WHERE username = ?";
 
+    private static final String  SQL_SELECT = "SELECT " + COLUMNS + " FROM people";
+
     private static final String SQL_SELECT_BY_PROJECTNAME = "SELECT p.id, p.username, p.email, p.realname, p.avatarurl, p.lastupdate FROM people p, contributor c " +
             "WHERE p.id = c.peopleid and c.projectname = ?";
 
@@ -82,11 +84,21 @@ public class PeopleDAOImpl implements PeopleDAO {
     }
 
     @Override
+    public List<People> select() {
+        try {
+            return jdbcTemplate.queryForList( SQL_SELECT, People.class);
+        }catch (Exception ex) {
+            log.error("cannot retrive peoples");
+            throw new RuntimeException( ex );
+        }
+    }
+
+    @Override
     public List<People> selectByProjectName(String projectName) {
         try {
             return jdbcTemplate.queryForList( SQL_SELECT_BY_PROJECTNAME, People.class, projectName);
         }catch (Exception ex) {
-            log.error("cannot retrive project model by project name={}", projectName);
+            log.error("cannot retrive people model by project name={}", projectName);
             throw new RuntimeException( ex );
         }
     }
