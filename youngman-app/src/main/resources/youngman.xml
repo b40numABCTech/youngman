@@ -91,7 +91,7 @@
             <entry key="gitRestClient" value-ref="gitRestClient" />
             <entry key="projectDAO" value-ref="projectDAO" />
             <entry key="peopleDAO" value-ref="peopleDAO" />
-            <entry key="collaboratorDAO" value-ref="contributorDAO" />
+            <entry key="contributorDAO" value-ref="contributorDAO" />
         </map>
     </property>
 </bean>
