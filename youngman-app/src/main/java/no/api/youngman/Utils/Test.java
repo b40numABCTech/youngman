@@ -4,16 +4,18 @@ import no.api.youngman.model.Contributor;
 import no.api.youngman.model.People;
 import no.api.youngman.model.Project;
 import no.api.youngman.neo4j.GraphService;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  *
  */
 public class Test {
-
+    /*
     public static void main(String[] args) {
-        GraphService service=new GraphService(Neo4jUtil.getNeo4jUrl());
-        //service.createProjectNode("transition");
-        //Iterable<Map<String,Object>> projects = service.getProjects();
+        ApplicationContext context = new ClassPathXmlApplicationContext("youngman.xml");
+        GraphService service = context.getBean(GraphService.class);
+
 
         Project project = new Project();
         project.setProjectName("AID");
@@ -42,5 +44,5 @@ public class Test {
 
         //service.createCollaborateRelations(collaborator);
     }
-
+    */
 }
