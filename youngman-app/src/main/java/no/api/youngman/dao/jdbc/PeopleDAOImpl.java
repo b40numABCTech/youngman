@@ -21,7 +21,7 @@ public class PeopleDAOImpl implements PeopleDAO {
             "username, email, realname, avatarurl, lastupdate) " +
             "VALUES (?, ?, ?, ?, ?, ?)";
 
-    private static final String SQL_UPDATE = "UPDATE INTO people SET username = ?, email = ?, " +
+    private static final String SQL_UPDATE = "UPDATE people SET username = ?, email = ?, " +
             "realname = ?, avatarurl = ?, lastupdate = ? WHERE id = ?";
 
     private static final String SQL_GET = "SELECT " + COLUMNS + " FROM people WHERE username = ?";
