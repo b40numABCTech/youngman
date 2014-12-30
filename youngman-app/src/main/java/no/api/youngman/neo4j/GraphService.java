@@ -52,7 +52,10 @@ public class GraphService {
                         "'}) ");
             }
         }
-        cypher.query(stringBuilder.toString());
+        if(stringBuilder.length() > 0){
+            cypher.query(stringBuilder.toString());
+        }
+
 
     }
 
@@ -70,7 +73,9 @@ public class GraphService {
                         "'}) ");
             }
         }
-        cypher.query(stringBuilder.toString());
+        if(stringBuilder.length() > 0){
+            cypher.query(stringBuilder.toString());
+        }
     }
 
     public void createCollaborateRelations(List<Contributor> collaborators) {
@@ -86,7 +91,7 @@ public class GraphService {
                                 " CREATE (p" + i + ")-[:COLLABORATED_BY]->(pp" + i + ") ");
             }
         }
-
+        System.out.println("collaborators complete!");
     }
 
     public List<Project> getProjects() {
