@@ -53,16 +53,20 @@ public class YoungmanApplication {
             }
         });
 
-        get("/people/:projectname", (request, response) -> {
-            GraphService service=new GraphService(Neo4jUtil.getNeo4jUrl());
-            Gson gson = new GsonBuilder().disableHtmlEscaping().create();
-            return gson.toJson(service.getPeopleByProjectName(request.params(":projectname")));
+        get("/people/selectByProjectName/:name", (request, response) -> {
+            if(isRDBMS(request)){
+                return gson.toJson(peopleDAO.selectByProjectName(request.params(":name")));
+            } else {
+                return gson.toJson(graphService.getPeopleByProjectName(request.params(":name")));
+            }
         });
 
-        get("/projects/:username", (request, response) -> {
-            GraphService service=new GraphService(Neo4jUtil.getNeo4jUrl());
-            Gson gson = new GsonBuilder().disableHtmlEscaping().create();
-            return gson.toJson(service.getProjectsByUsername(request.params(":username")));
+        get("/projects/selectByUsername/:name", (request, response) -> {
+            if(isRDBMS(request)){
+                return gson.toJson(projectDAO.selectByUsername(request.params(":name")));
+            } else {
+                return gson.toJson(graphService.getProjectsByUsername(request.params(":name")));
+            }
         });
     }
 
