@@ -86,7 +86,7 @@ public class PeopleDAOImpl implements PeopleDAO {
     @Override
     public List<People> select() {
         try {
-            return jdbcTemplate.queryForList( SQL_SELECT, People.class);
+            return jdbcTemplate.query( SQL_SELECT, new PeopleMapper());
         }catch (Exception ex) {
             log.error("cannot retrive peoples");
             throw new RuntimeException( ex );
@@ -96,7 +96,7 @@ public class PeopleDAOImpl implements PeopleDAO {
     @Override
     public List<People> selectByProjectName(String projectName) {
         try {
-            return jdbcTemplate.queryForList( SQL_SELECT_BY_PROJECTNAME, People.class, projectName);
+            return jdbcTemplate.query( SQL_SELECT_BY_PROJECTNAME, new PeopleMapper(), projectName);
         }catch (Exception ex) {
             log.error("cannot retrive people model by project name={}", projectName);
             throw new RuntimeException( ex );

@@ -93,7 +93,7 @@ public class ProjectDAOImpl implements ProjectDAO {
     @Override
     public List<Project> select() {
         try {
-            return jdbcTemplate.queryForList( SQL_SELECT, Project.class);
+            return jdbcTemplate.query( SQL_SELECT, new ProjectMapper());
         }catch (Exception ex) {
             log.error("cannot retrive peoples");
             throw new RuntimeException( ex );
@@ -103,7 +103,7 @@ public class ProjectDAOImpl implements ProjectDAO {
     @Override
     public List<Project> selectByUsername(String username) {
         try {
-            return jdbcTemplate.queryForList( SQL_SELECT_BY_USERNAME, Project.class, username);
+            return jdbcTemplate.query( SQL_SELECT_BY_USERNAME, new ProjectMapper(), username);
         }catch (Exception ex) {
             log.error("cannot retrive project model by username={}", username);
             throw new RuntimeException( ex );
