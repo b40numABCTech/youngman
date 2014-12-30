@@ -50,7 +50,7 @@ public class FetchGitJob extends QuartzJobBean {
         Set<String> stPeopleId = new HashSet<>();
         List<Project> lstProject = gitRestClient.getAllProject();
         for(Project project : lstProject) {
-            Project projectDB = projectDAO.get(project.getId());
+            Project projectDB = projectDAO.get(project.getProjectName());
             if(projectDB == null) {
                 projectDAO.insert(project);
             } else {
