@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-//@Ignore
+@Ignore
 @ContextConfiguration(locations ="/youngman-applicationContext-integrationtest.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 public class FetchGitJobIntegrationTest {
