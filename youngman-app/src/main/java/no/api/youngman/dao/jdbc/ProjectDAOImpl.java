@@ -3,8 +3,8 @@ package no.api.youngman.dao.jdbc;
 import no.api.youngman.dao.ProjectDAO;
 import no.api.youngman.model.Project;
 import org.joda.time.DateTime;
-import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,6 +14,7 @@ import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class ProjectDAOImpl implements ProjectDAO {
 
@@ -29,6 +30,10 @@ public class ProjectDAOImpl implements ProjectDAO {
             "description = ?, lang = ?, projecturl = ?, contributorurl = ?, lastupdate = ? WHERE id = ?";
 
     private static final String SQL_GET = "SELECT " + COLUMNS + " FROM project WHERE id = ?";
+
+    private static final String SQL_SELECT_BY_USERNAME = "SELECT p.id, p.projectname, p.projectfullname, " +
+            "p.description, p.lang, p.projecturl, p.contributorurl, p.lastupdate FROM project p, contributor c " +
+            "WHERE p.id = c.projectid and c.username = ?";
 
     private JdbcTemplate jdbcTemplate;
 
@@ -80,6 +85,16 @@ public class ProjectDAOImpl implements ProjectDAO {
             return jdbcTemplate.queryForObject(SQL_GET, new Object[] {id}, new ProjectMapper());
         } catch (EmptyResultDataAccessException e) {
             return null;
+        }
+    }
+
+    @Override
+    public List<Project> selectByUsername(String username) {
+        try {
+            return jdbcTemplate.queryForList( SQL_SELECT_BY_USERNAME, Project.class, username);
+        }catch (Exception ex) {
+            log.error("cannot retrive project model by username={}", username);
+            throw new RuntimeException( ex );
         }
     }
 
