@@ -29,5 +29,17 @@ public class YoungmanApplication {
             Gson gson = new GsonBuilder().disableHtmlEscaping().create();
             return gson.toJson(service.getPeople());
         });
+
+        get("/people/:projectname", (request, response) -> {
+            GraphService service=new GraphService(Neo4jUtil.getNeo4jUrl());
+            Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+            return gson.toJson(service.getPeopleByProjectName(request.params(":projectname")));
+        });
+
+        get("/projects/:username", (request, response) -> {
+            GraphService service=new GraphService(Neo4jUtil.getNeo4jUrl());
+            Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+            return gson.toJson(service.getProjectsByUsername(request.params(":username")));
+        });
     }
 }
