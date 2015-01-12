@@ -2,6 +2,8 @@ package no.api.youngman;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import no.api.youngman.dao.PeopleDAO;
 import no.api.youngman.dao.ProjectDAO;
 import no.api.youngman.model.Project;
@@ -23,13 +25,17 @@ public class YoungmanApplication {
         GraphService graphService = context.getBean(GraphService.class);
         PeopleDAO peopleDAO = context.getBean(PeopleDAO.class);
         ProjectDAO projectDAO = context.getBean(ProjectDAO.class);
-        Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+        //Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         get("/project", (request, response) -> {
             if(isRDBMS(request)){
                 return gson.toJson(projectDAO.select());
             } else {
-                return gson.toJson(graphService.getProjects());
+                JsonParser jp = new JsonParser();
+                JsonElement je = jp.parse(gson.toJson(graphService.getProjects()));
+                String prettyJsonString = gson.toJson(je);
+                return gson.toJson(prettyJsonString );
             }
         });
 

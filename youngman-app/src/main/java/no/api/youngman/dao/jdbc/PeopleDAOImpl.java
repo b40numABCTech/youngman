@@ -33,8 +33,11 @@ public class PeopleDAOImpl implements PeopleDAO {
 
     private static final String  SQL_SELECT = "SELECT " + COLUMNS + " FROM people";
 
-    private static final String SQL_SELECT_BY_PROJECTNAME = "SELECT p.id, p.username, p.email, p.realname, p.avatarurl, p.lastupdate FROM people p, contributor c " +
-            "WHERE p.id = c.peopleid and c.projectname = ?";
+    //private static final String SQL_SELECT_BY_PROJECTNAME = "SELECT p.id, p.username, p.email, p.realname, " +
+    //        "p.avatarurl, p.lastupdate FROM people p, contributor c " +
+     //       "WHERE p.id = c.peopleid and c.projectname = ?";
+    private static final String SQL_SELECT_BY_PROJECTNAME = "SELECT p.id, p.username, p.email, p.realname, p.avatarurl, p.lastupdate FROM people p, contributor c,project pr " +
+            "WHERE p.id = c.peopleid and c.projectid =pr.id and pr.projectname= ?";
 
     private JdbcTemplate jdbcTemplate;
 

@@ -228,7 +228,9 @@ public class GitRestClient {
         HttpHeaders headers = addAuthentication();
         HttpEntity<String> request = new HttpEntity<String>(headers);
         try {
+            System.out.println("start fetching");
             ResponseEntity<String> response = restClient.exchange(address, HttpMethod.GET, request, String.class);
+            System.out.println("stop fetching");
             return response;
         }catch (HttpClientErrorException ex){
             System.out.println("error cann't read " + address);

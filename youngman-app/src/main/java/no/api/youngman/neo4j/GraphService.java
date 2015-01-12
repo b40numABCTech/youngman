@@ -134,8 +134,8 @@ public class GraphService {
 
     public Iterable<Map<String, Object>> getRelation(Contributor collaborators) {
         return IteratorUtil.asCollection(cypher.query(
-                "MATCH (a:Project{projectname:'" + collaborators.getProjectId() + "'})-[:COLLABORATED_BY]->" +
-                        "(b:People{username:'" + collaborators.getProjectId() + "'}) RETURN a,b LIMIT 1"));
+                "MATCH (a:Project{projectid:'" + collaborators.getProjectName() + "'})-[:COLLABORATED_BY]->" +
+                        "(b:People{username:'" + collaborators.getUserName() + "'}) RETURN a,b LIMIT 1"));
     }
 
     public List<Project> getProjectsByUsername(String username) {
