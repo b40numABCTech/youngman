@@ -26,20 +26,19 @@ public class YoungmanApplication {
         PeopleDAO peopleDAO = context.getBean(PeopleDAO.class);
         ProjectDAO projectDAO = context.getBean(ProjectDAO.class);
         //Gson gson = new GsonBuilder().disableHtmlEscaping().create();
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
+       // Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Gson gson=new Gson();
         get("/project", (request, response) -> {
+            response.type("application/json");
             if(isRDBMS(request)){
                 return gson.toJson(projectDAO.select());
             } else {
-                JsonParser jp = new JsonParser();
-                JsonElement je = jp.parse(gson.toJson(graphService.getProjects()));
-                String prettyJsonString = gson.toJson(je);
-                return gson.toJson(prettyJsonString );
+                return gson.toJson(graphService.getProjects());
             }
         });
 
         get("/project/:name", (request, response) -> {
+            response.type("application/json");
             if(isRDBMS(request)){
                 return gson.toJson(projectDAO.get(request.params(":name")));
             } else {
@@ -48,6 +47,7 @@ public class YoungmanApplication {
         });
 
         get("/people", (request, response) -> {
+            response.type("application/json");
             if(isRDBMS(request)){
                 return gson.toJson(peopleDAO.select());
             } else {
@@ -56,6 +56,7 @@ public class YoungmanApplication {
         });
 
         get("/people/:name", (request, response) -> {
+            response.type("application/json");
             if(isRDBMS(request)){
                 return gson.toJson(peopleDAO.get(request.params(":name")));
             } else {
@@ -64,6 +65,7 @@ public class YoungmanApplication {
         });
 
         get("/people/selectByProjectName/:name", (request, response) -> {
+            response.type("application/json");
             if(isRDBMS(request)){
                 return gson.toJson(peopleDAO.selectByProjectName(request.params(":name")));
             } else {
@@ -72,6 +74,7 @@ public class YoungmanApplication {
         });
 
         get("/project/selectByUsername/:name", (request, response) -> {
+            response.type("application/json");
             if(isRDBMS(request)){
                 return gson.toJson(projectDAO.selectByUsername(request.params(":name")));
             } else {

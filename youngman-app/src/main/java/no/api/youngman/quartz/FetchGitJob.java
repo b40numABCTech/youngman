@@ -79,5 +79,6 @@ public class FetchGitJob extends QuartzJobBean {
         graphService.createProjectNode(lstProject);
         graphService.createPeopleNode(gitRestClient.getAllMember());
         graphService.createCollaborateRelations(gitRestClient.getAllContributor(lstProject));
+        System.out.println("All import done");
     }
 }
