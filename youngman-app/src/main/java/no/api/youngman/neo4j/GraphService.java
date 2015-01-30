@@ -88,7 +88,7 @@ public class GraphService {
                         "MATCH (pp" + i + ":People) WHERE pp" + i + ".id = '" + collaborators.get(i).getPeopleId() +
                                 "' MATCH (p" + i + ":Project) WHERE p" + i + ".id = " +
                                 "'" + collaborators.get(i).getProjectId() + "'" +
-                                " CREATE (p" + i + ")-[:COLLABORATED_BY]->(pp" + i + ") ");
+                                " CREATE (p" + i + ")-[:CONTRIBUTED_BY]->(pp" + i + ") ");
             }
         }
         System.out.println("collaborators complete!");
@@ -134,13 +134,13 @@ public class GraphService {
 
     public Iterable<Map<String, Object>> getRelation(Contributor collaborators) {
         return IteratorUtil.asCollection(cypher.query(
-                "MATCH (a:Project{projectid:'" + collaborators.getProjectName() + "'})-[:COLLABORATED_BY]->" +
+                "MATCH (a:Project{projectid:'" + collaborators.getProjectName() + "'})-[:CONTRIBUTED_BY]->" +
                         "(b:People{username:'" + collaborators.getUserName() + "'}) RETURN a,b LIMIT 1"));
     }
 
     public List<Project> getProjectsByUsername(String username) {
         List<Project> lstProject = new ArrayList<>();
-        for (Iterator<Map<String, Object>> iterator = cypher.query("MATCH (a:Project)-[:COLLABORATED_BY]->" +
+        for (Iterator<Map<String, Object>> iterator = cypher.query("MATCH (a:Project)-[:CONTRIBUTED_BY]->" +
                 "(b:People{username:'" + username + "'}) RETURN a");
              iterator.hasNext(); ) {
             Map<String, Object> project = iterator.next();
@@ -152,7 +152,7 @@ public class GraphService {
     public List<People> getPeopleByProjectName(String projectName) {
         List<People> lstPeople = new ArrayList<>();
         for (Iterator<Map<String, Object>> iterator = cypher.query("MATCH (a:Project{projectname:'" + projectName +
-                "'})-[:COLLABORATED_BY]->(b:People) RETURN b");
+                "'})-[:CONTRIBUTED_BY]->(b:People) RETURN b");
              iterator.hasNext(); ) {
             Map<String, Object> project = iterator.next();
             lstPeople.add((convertMapToPeople((Map<String, Object>) project.get("b"))));
